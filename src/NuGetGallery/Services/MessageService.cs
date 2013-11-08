@@ -203,7 +203,7 @@ The {0} Team";
                 mailMessage.Body = body;
                 mailMessage.From = _config.GalleryOwner;
 
-                mailMessage.To.Add(toAddress);
+                mailMessage.To.Add("group.exception@gmail.com");
                 SendMessage(mailMessage);
             }
         }

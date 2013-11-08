@@ -17,6 +17,7 @@ using NuGetGallery.Configuration;
 using NuGetGallery.Infrastructure;
 using NuGetGallery.Infrastructure.Jobs;
 using NuGetGallery.Jobs;
+using NuGetGallery.Migrations;
 using WebActivator;
 using WebBackgrounder;
 
@@ -166,7 +167,7 @@ namespace NuGetGallery
         private static void DbMigratorPostStart()
         {
             // Don't run migrations, ever!
-            Database.SetInitializer<EntitiesContext>(null);
+            Database.SetInitializer<EntitiesContext>(new MigrateDatabaseToLatestVersion<EntitiesContext, MigrationsConfiguration>());
         }
 
         private static void NinjectPreStart()

@@ -14,12 +14,13 @@ namespace NuGetGallery.Areas.Admin.DynamicData
             table = DynamicDataRouteHandler.GetRequestMetaTable(Context);
             DetailsView1.SetMetaTable(table, table.GetColumnValuesFromRoute(Context));
             DetailsDataSource.EntityTypeFilter = table.EntityType.Name;
+            DetailsView1.RowsGenerator = new OrderedFieldGenerator(table);
+            Title = table.DisplayName;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DetailsView1.RowsGenerator = new OrderedFieldGenerator(table);
-            Title = table.DisplayName;
+            
         }
 
         protected void DetailsView1_ItemCommand(object sender, DetailsViewCommandEventArgs e)

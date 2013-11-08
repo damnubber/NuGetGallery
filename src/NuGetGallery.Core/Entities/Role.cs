@@ -2,7 +2,7 @@
 
 namespace NuGetGallery
 {
-    public class Role
+    public class Role : IEntity
     {
         public int Key { get; set; }
         public string Name { get; set; }

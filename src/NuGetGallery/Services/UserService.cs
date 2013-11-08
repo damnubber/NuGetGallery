@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using Crypto = NuGetGallery.CryptographyService;
 using NuGetGallery.Configuration;
+using System.Web.Security;
+using System.Collections;
 
 namespace NuGetGallery
 {
@@ -11,6 +13,7 @@ namespace NuGetGallery
     {
         public IAppConfiguration Config { get; protected set; }
         public IEntityRepository<User> UserRepository { get; protected set; }
+        public IEntityRepository<Role> RoleRepository { get; protected set; }
         public IEntityRepository<Credential> CredentialRepository { get; protected set; }
 
         protected UserService() { }
@@ -18,11 +21,13 @@ namespace NuGetGallery
         public UserService(
             IAppConfiguration config,
             IEntityRepository<User> userRepository,
+            IEntityRepository<Role> roleRepository,
             IEntityRepository<Credential> credentialRepository)
             : this()
         {
             Config = config;
             UserRepository = userRepository;
+            RoleRepository = roleRepository;
             CredentialRepository = credentialRepository;
         }
 
@@ -57,7 +62,8 @@ namespace NuGetGallery
                 EmailConfirmationToken = Crypto.GenerateToken(),
                 HashedPassword = hashedPassword,
                 PasswordHashAlgorithm = Constants.PBKDF2HashAlgorithmId,
-                CreatedUtc = DateTime.UtcNow
+                CreatedUtc = DateTime.UtcNow,
+                Roles = new List<Role> { RoleRepository.GetEntity(2) }
             };
 
             // Add a credential for the password and the API Key
@@ -69,7 +75,10 @@ namespace NuGetGallery
                 newUser.ConfirmEmailAddress();
             }
 
+            newUser.Roles.Add(RoleRepository.GetEntity(2));
+
             UserRepository.InsertOnCommit(newUser);
+
             UserRepository.CommitChanges();
 
             return newUser;

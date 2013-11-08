@@ -36,12 +36,14 @@ namespace NuGetGallery.Areas.Admin.DynamicData
                 InsertHyperLink.Visible = false;
                 GridView1.EnablePersistedSelection = false;
             }
+
+            Title = table.DisplayName;
+            GridDataSource.Include = table.ForeignKeyColumnsNames;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Title = table.DisplayName;
-            GridDataSource.Include = table.ForeignKeyColumnsNames;
+            
         }
 
         protected void Label_PreRender(object sender, EventArgs e)

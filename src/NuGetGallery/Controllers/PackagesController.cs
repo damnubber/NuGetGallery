@@ -143,7 +143,7 @@ namespace NuGetGallery
             return Redirect(Url.Package(id, version));
         }
 
-        [Authorize]
+        [Authorize(Roles="Admin")]
         [RequiresAccountConfirmation("upload a package")]
         public async virtual Task<ActionResult> UploadPackage()
         {
@@ -161,7 +161,7 @@ namespace NuGetGallery
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles="Admin")]
         [RequiresAccountConfirmation("upload a package")]
         [ValidateAntiForgeryToken]
         public virtual async Task<ActionResult> UploadPackage(HttpPostedFileBase uploadFile)
